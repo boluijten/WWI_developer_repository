@@ -137,7 +137,7 @@ function zoekProduct(){
 			$searchQuery = "SELECT StockItemName, StockItemID, MarketingComments, StockGroupID, Photo FROM stockitems JOIN stockitemstockgroups USING(StockItemID) WHERE SearchDetails LIKE '%$searchID%' GROUP BY StockItemID";
 		}
 		// Zoek in de database naar producten die de zoekterm in de naam hebben
-		
+
 
 		// Haal naam id en comments uit de database
 		$resultSearch = mysqli_query($connect, $searchQuery);
@@ -167,13 +167,13 @@ function zoekProduct(){
 			}else{
 				echo "<div class='geenProducten'>Nog geen producten met de zoekterm \"$searchID\"!</div>";
 			}
-		    
+
 		}
 	}else{
 		header("location: index.php");
 
 	}
-	
+
 
 }
 
@@ -235,6 +235,9 @@ function laadProductpagina(){
 					    </div>
 					  </div>";
 	  		}
+				echo "<hr>
+					<!-- Beschrijving van de producten-->
+					<p>Dit is een mooi product, Beschrijving van producten inladen? Testbeschrijving123</p>";
 		} else {
 		    echo "<div class='geenProducten'>Sorry er ging iets mis met het vinden van het product</div>";
 		}
@@ -272,17 +275,17 @@ function RandomProduct(){
 
 function laadDeals(){
 	include("connect.php");
-	$query = "SELECT * FROM discount LEFT JOIN stockitems USING(stockItemID)";
+	$query = "SELECT D.StockItemID ja, StockGroupID, StockItemName, UnitPrice, discountPercentage FROM discount D LEFT JOIN stockitems S USING(StockItemID) LEFT JOIN stockitemstockgroups USING(StockItemID)";
 	$resultSpecialdeal = mysqli_query($connect, $query);
     if(mysqli_num_rows($resultSpecialdeal) > 0){
         while($row = mysqli_fetch_assoc($resultSpecialdeal)){
         	$nieuwprijs = "";
-           echo "<div class=\"aanbieding-product\">
+           echo "<a href='artikel.php?artikel=".$row['ja']."&group=".$row['StockGroupID']."'><div class=\"aanbieding-product\">
 				    <p style=\"float:left;\">".$row['StockItemName']."</p>
 				    <p style=\"float:right\">".number_format($row['UnitPrice'] * ((100-$row['discountPercentage'])/100), 2, ',', '.')."</p>
 				    <sub><p style=\"float:right;text-decoration: line-through;\">".$row['UnitPrice']."  </p></sub>
 				    <p>".$row['discountPercentage']."% korting! </p>
-				  </div>";
+				  </div></a>";
         }
     }
 }

@@ -1,6 +1,5 @@
 <?php
 ob_start();
-session_start();
 include("header.php");
 ?>
 <html>
@@ -17,15 +16,20 @@ include("header.php");
 
 
 <body>
-  
+
+
+
   <?php
 include("functions.php");
-zoekProduct();
 laadCategorieZoekpagina();
+zoekProduct();
+
 
 
 ?>
-
+<div class="footer">
+  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
+</div>
 
 
 </body>
