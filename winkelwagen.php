@@ -55,12 +55,13 @@ hr {
                 echo "<!-- De delete button -->
 
                 <!--Aantal -->
-                <input type=\"number\" name=\"aantal\" min=\"1\" max=\"99\" value=\"".$aantal."\" maxlength=\"4\" size=\"4\" style=\"float: right;\"/>
+
+                <input type=\"number\" name=\"aantal\" min=\"1\" max=\"99\" value=\"".$aantal."\" maxlength=\"4\" size=\"4\" style=\"float: right; margin-right:3vw;\"/>
                 <input type='hidden' name='itemIDSend' value='$itemID'>
                 <input type='hidden' name='changeValue'/>
                 </form>
                 <form method='post'>
-	                <button type='submit' value=\"Submit\" id=\"seleteItem\" name='deleteItem' style=\"float:right; height:28px;\" />
+	                <button type='submit' value=\"Submit\" id=\"seleteItem\" name='deleteItem' style=\"float:right;margin-top:-37px; height:28px;\" />
 	                  <i class=\"fas fa-trash-alt\"></i>
 	                </button>
                 	<input type='hidden' name='itemIDSend' value='$itemID'>

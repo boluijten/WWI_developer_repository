@@ -27,6 +27,8 @@ zoekProduct();
 
 
 ?>
+
+
 <div class="footer">
   <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
 </div>
