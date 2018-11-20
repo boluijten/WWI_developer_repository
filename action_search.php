@@ -1,6 +1,10 @@
 <?php
 ob_start();
+<<<<<<< HEAD
 include("header.php");
+=======
+session_start();
+>>>>>>> 5301731e8eb357b01e84c29029667885004851bb
 ?>
 <html>
 <head>
@@ -35,5 +39,9 @@ zoekProduct();
 
 
 </body>
+<?php
 
+include("header.php");
+
+?>
 </html>
