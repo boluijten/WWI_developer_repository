@@ -16,7 +16,6 @@
   text-align: center;
 	padding-top: 20px;
 	padding-right: 15px;
-	padding-bottom: 35px;
 	padding-left: 15px;
   text-decoration: none;
   font-size: 17px;
@@ -26,6 +25,8 @@
 .navbar .navbar-text:hover {
   background: rgba(0, 174, 239, 0.8);
   color: black;
+  padding-bottom: 10px;
+
 }
 
 .navbar .search-container {
@@ -92,4 +93,52 @@
   left: 0;
   text-align:center;
   color: white;
+}
+
+.footer2 {
+  background: #333;
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  bottom: 0px;
+  margin-top: 20px;
+  text-align:center;
+  color: white;
+}
+
+button{
+  background:rgba(0, 174, 239, 0.8);
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+button:hover{
+  background: #e8e8e8;
+  color:rgba(0, 174, 239, 0.8);
+}
+button:before,button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: rgba(0, 174, 239, 0.8);
+  transition:400ms ease all;
+}
+button:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+button:hover:before,button:hover:after{
+  width:100%;
+  transition:800ms ease all;
 }

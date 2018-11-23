@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 include("header.php");
 ?>
 <html>
@@ -49,19 +50,19 @@ hr {
                 <!-- Text -->
                 ".$row['StockItemName']."  - &euro;".$row['UnitPrice'];
                 if($aantal > 1){
-                  echo " - &euro;". number_format($row['UnitPrice'] * $aantal, 2, ',', '.');
+                  echo "<div style='float:right'> &euro;". number_format($row['UnitPrice'] * $aantal, 2, ',', '.'). "</div>";
 
                 }
                 echo "<!-- De delete button -->
 
                 <!--Aantal -->
 
-                <input type=\"number\" name=\"aantal\" min=\"1\" max=\"99\" value=\"".$aantal."\" maxlength=\"4\" size=\"4\" style=\"float: right; margin-right:3vw;\"/>
+                <input type=\"number\" name=\"aantal\" min=\"1\" max=\"99\" value=\"".$aantal."\"size=\"4\" style=\"float: right; margin-right:6vw;\"/>
                 <input type='hidden' name='itemIDSend' value='$itemID'>
                 <input type='hidden' name='changeValue'/>
                 </form>
                 <form method='post'>
-	                <button type='submit' value=\"Submit\" id=\"seleteItem\" name='deleteItem' style=\"float:right;margin-top:-37px; height:28px;\" />
+	                <button type='submit' value=\"Submit\" id=\"seleteItem\" name='deleteItem' style=\"float:right; margin-right:5.2vw; margin-top:-37px; height:28px;\" />
 	                  <i class=\"fas fa-trash-alt\"></i>
 	                </button>
                 	<input type='hidden' name='itemIDSend' value='$itemID'>
@@ -132,8 +133,8 @@ hr {
 
 </div>
 <div class="winkelvak-samenvatting">
-<p style="font-size: 15px;margin-top:0; padding-left: 5px;float:left; position:relative;">totale prijs: <?php echo "&euro;".totaalPrijs(); ?></p>
-<p style="font-size: 15px;margin-top:0; padding-right: 5px;float:right; position:relative;">totaal aantal: <?php echo $productIndicator; ?></p>
+<p style="font-size: 15px;margin-top:0; padding-right: 5px;float:right; position:relative;">totale prijs: <?php echo "&euro;".totaalPrijs(); ?></p>
+<p style="font-size: 15px;margin-top:0; padding-left: 5px;float:left; position:relative;">totaal aantal: <?php echo $productIndicator; ?></p>
 </div>
 </div>
 <!-- De Knop om verder te gaan met winkelen -->
@@ -141,7 +142,7 @@ hr {
 <button onclick="goBack()" style="float:left;"><i class="fas fa-backspace"></i> Terug gaan</button>
 
 <!-- De Knop om verder te gaan naar afrekenpagina -->
-<button onclick="location.href='afrekenen.php';"   style="float:right;"><i class="fas fa-forward"></i> Afrekenen</button>
+<button onclick="location.href='betaalpagina.php';"   style="float:right;"><i class="fas fa-forward"></i> Afrekenen</button>
 </div>
 <script>
 function goBack() {

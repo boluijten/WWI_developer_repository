@@ -1,5 +1,6 @@
 <?php
   // Laden van functies uit 'functions.php'
+  session_start();
 ob_start();
  include("functions.php");
 
@@ -18,6 +19,13 @@ ob_start();
 </head>
 
 <style>
+.sorteerkolom{
+  width:auto;
+  margin-top: 20px;
+  text-align: center;
+  padding-top: 20px;
+  border: 2px solid black;
+}
 </style>
 
 <body>
@@ -26,22 +34,47 @@ ob_start();
 laadCategorie();
 ?>
  <!-- Uitgelichte Producten -->
+
 <div class="grid-container2">
-  <button style="z-index:5;top: 32%; position: absolute;" onclick="plusDivs(-1)">&#10094;</button>
-  <button style="margin-left: 76%; top: 32%; z-index:5; position: absolute;" onclick="plusDivs(1)">&#10095;</button>
+  <?php
+    laadDeals();
+  ?>
 <div class="uitgelichteproducten">
   <canvas id="canvas"></canvas>
+
   <p style="margin-top:-17%">De nieuwe website, grote aanbiedingen!</p>
+<button style="z-index:5; position:relative; float:left;" onclick="plusDivs(-1)">&#10094;</button>
+<button style="z-index:5; position:relative; float:right;" onclick="plusDivs(1)">&#10095;</button>
+</div>
 
 
 </div>
 
-<?php
-  laadDeals();
-?>
+<div class="grid-container2">
+<div class="sorteerkolom">
+Sorteren op:
 
+
+  <form method='GET'>
+<label name="sorteer">
+  <input type="radio" name="sortSelect" value="AZ_homepage">Naam A-Z  &nbsp |  &nbsp
+  <input type="radio" name="sortSelect" value="ZA_homepage">Naam Z-A  &nbsp |  &nbsp
+  <input type="radio" name="sortSelect" value="PHL_homepage">Prijs Hoog - Laag  &nbsp | &nbsp
+  <input type="radio" name="sortSelect" value="PLH_homepage">Prijs Laag - Hoog  &nbsp | &nbsp
+  <select>
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="oneindig">∞</option>
+</select>
+    <input type="submit" value="resultaten">
+</label>
+
+
+</form>
 </div>
-
+</div>
 <?php
 
 // Later een terugfunctie door op de geselecteerde categorie te klikken?
@@ -170,7 +203,25 @@ function showDivs(n) {
 </script>
 
 
+
 </body>
+
+<?php
+
+
+if (filter_input('sortSelect') == "AZ_homepage"){
+  AZ_homepage();
+} elseif (filter_input('sortSelect') == "Naam_z"){
+  SorteerProductenZA();
+} elseif (filter_input('sortSelect') == "Prijs_hoog"){
+  SorteerProductenDESC();
+} elseif (filter_input('sortSelect') == "Prijs_laag"){
+  SorteerProductenASC();
+}else{
+  laadProducten();
+}
+?>
+
 
 <?php
 include("header.php");

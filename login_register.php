@@ -1,6 +1,5 @@
 <?php
 ob_start();
-session_start();
 include("connect.php");
 include("loginFunctions.php");
 ?>
@@ -19,20 +18,21 @@ include("loginFunctions.php");
 </style>
 
 <body>
-
-
-    <br>
-    <br>
-    <br>
-    <br>
+<div class="head-form">
+  <div class="login-form">
     <!-- Login form -->
     <form method="POST" >
         <h3>Login</h3>
-        <input type="text" name="emailLoginTXT" placeholder="Email" required>
-        <input type="password" name="passwordLoginTXT" placeholder="Password" required><br>
-        <input type="submit" name="submitLoginBTN" value="Login">
-    
+        <input type="text" name="emailLoginTXT" placeholder="Email" required><br>
+        <input type="password" name="passwordLoginTXT" placeholder="Password" required><br><br>
+        <button name="submitLoginBTN" style="margin-top:75px;">Log In</button>
     </form>
+  </div>
+
+
+<div class="vl"></div>
+
+  <div class="register-form">
     <!-- Register form -->
     <form method="POST">
         <h3>Register</h3>
@@ -45,15 +45,21 @@ include("loginFunctions.php");
         <input type="text" name="huisnummerRegisterTXT" placeholder="Huisnummer (inc. toevoeging)" required>
         <input type="text" name="postcodeRegisterTXT" placeholder="Postcode" required><br>
         <input type="password" name="passwordRegisterTXT" placeholder="Wachtwoord" required>
-        <input type="password" name="passwordRetypeRegisterTXT" placeholder="Controlleer wachtwoord" required><br>
+        <input type="password" name="passwordRetypeRegisterTXT" placeholder="Controleer wachtwoord" required><br>
 
-        <input type="submit" name="submitRegisterBTN" value="Registreer">
+        <button name="submitRegisterBTN" style="margin-top:10px;">Registreren</button>
     </form>
+</div>
+</div>
+
+<div class="footer2">
+  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
+</div>
 
 
 
 </body>
-<?php  
+<?php
 include("header.php");
 ?>
 

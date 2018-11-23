@@ -2,7 +2,8 @@
 body{
 	font-family: sans-serif;
 	font-weight: lighter;
-	background-color: #e8e8e8;
+	background-color: white;
+  padding-top: 10vh;
 }
 h1{
 	font-weight: lighter;
@@ -82,22 +83,35 @@ position: sticky;
 
 .grid-container2 {
 	width: 77vw;
-  margin-top: 20vh;
+  margin-top: 7.5vh;
   margin-left: 20vw;
   margin-right: 5vw;
-  display: grid;
-	grid-template-columns: auto;
-	display: flex;
-	 align-items: flex-start;
 }
-
-.grid-container-seach {
+.grid-container-1 {
+	margin-top: 5vh;
+	margin-left: 20vw;
+	margin-right: 5vw;
+	margin-top: 5vh;
 	justify-items: center;
-  margin-top: 30vh;
   grid-gap: 10px;
   display: grid;
   grid-template-columns: auto auto auto;
+	text-decoration: none;
 
+
+}
+
+
+.grid-container-seach {
+	margin-top: 5vh;
+	margin-left: 20vw;
+	margin-right: 5vw;
+	margin-top: 5vh;
+	justify-items: center;
+  grid-gap: 10px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+	text-decoration: none;
 
 
 }
@@ -203,7 +217,6 @@ position: sticky;
   height: 30vh;
 	text-decoration: none;
 	align-items: center;
-	z-index: -1000;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -275,15 +288,53 @@ position: sticky;
 .search{
   position: absolute;
 	width: 100vw;
-  top: 20vh;
+  top: 10vh;
 	text-align: center;
 }
 
 canvas {
   margin: 0;
-	z-index: -10000;
+	z-index: 1;
 	position: relative;
   width: inherit;
   height: inherit;
 
+}
+
+
+button{
+  background:rgba(0, 174, 239, 0.8);
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+button:hover{
+  background: #e8e8e8;
+  color:rgba(0, 174, 239, 0.8);
+}
+button:before,button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: rgba(0, 174, 239, 0.8);
+  transition:400ms ease all;
+}
+button:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+button:hover:before,button:hover:after{
+  width:100%;
+  transition:800ms ease all;
 }

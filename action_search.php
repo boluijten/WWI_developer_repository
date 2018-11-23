@@ -1,10 +1,7 @@
 <?php
 ob_start();
-<<<<<<< HEAD
-include("header.php");
-=======
 session_start();
->>>>>>> 5301731e8eb357b01e84c29029667885004851bb
+include("header.php");
 ?>
 <html>
 <head>
@@ -16,6 +13,16 @@ session_start();
 </head>
 
 <style>
+.sorteerkolom{
+  margin-top: 10%;
+  margin-left: 20vw;
+  height:12vh;
+  text-align: center;
+  border: 2px solid black;
+  width: 75vw;
+  padding: 10px;
+
+}
 </style>
 
 
@@ -23,13 +30,43 @@ session_start();
 
 
 
-  <?php
+<div class="sorteerkolom">
+Sorteren op:
+
+
+  <form method='GET'>
+<label name="sorteer">
+  <input type="radio" name="sortSelect" value="Naam_a">Naam A-Z
+  <input type="radio" name="sortSelect" value="Naam_z">Naam Z-A
+  <input type="radio" name="sortSelect" value="Prijs_hoog">Prijs Hoog - Laag
+  <input type="radio" name="sortSelect" value="Prijs_laag">Prijs Laag - Hoog
+
+  <input type="hidden" name="search" value="<?php echo filter_input(INPUT_GET, 'search'); ?>">
+  <input type="submit" value="sorteer">
+</label>
+
+
+</form>
+</div>
+
+
+<?php
+
+$zoekterm = filter_input(INPUT_GET, 'search');
 include("functions.php");
 laadCategorieZoekpagina();
-zoekProduct();
 
-
-
+if (filter_input(INPUT_GET, 'sortSelect') == "Naam_a"){
+  SorteerProductenAZ();
+} elseif (filter_input(INPUT_GET, 'sortSelect') == "Naam_z"){
+  SorteerProductenZA();
+} elseif (filter_input(INPUT_GET, 'sortSelect') == "Prijs_hoog"){
+  SorteerProductenDESC();
+} elseif (filter_input(INPUT_GET, 'sortSelect') == "Prijs_laag"){
+  SorteerProductenASC();
+}else{
+  zoekProduct();
+}
 ?>
 
 
@@ -39,9 +76,5 @@ zoekProduct();
 
 
 </body>
-<?php
 
-include("header.php");
-
-?>
 </html>

@@ -8,7 +8,7 @@ if(isset($_SESSION['cart'])){
 
 echo "
 <!-- Top Navigatie Balk -->
-  <div class=\"navbar\">
+  <div style=\"width:100%; left:0%; \"class=\"navbar\">
  <a href=\"index.php\"><img style=\"width:auto; height:80px;\" src=\"assets/logo.png\"></a>
 
  <!-- Winkelwagentje + Aantal artikelen -->
@@ -19,9 +19,9 @@ echo "
   <div class = navbar-text>";
 
 if(isset($_SESSION['userInfo'])){
-  echo "<a style=\"text-decoration: none;\" href=\"user.php\">Hallo, ".$_SESSION['userInfo'][1]."</a>";
+  echo "<a style=\"color:white; text-decoration: none;\" href=\"user.php\">Hallo, ".$_SESSION['userInfo'][1]."</a>";
 }else{
-  echo "<a style=\"text-decoration: none;\" href=\"login_register.php\">Inloggen</a>";
+  echo "<a style=\"color:white; text-decoration: none;\" href=\"login_register.php\">Inloggen</a>";
 }
 
 

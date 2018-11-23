@@ -13,11 +13,20 @@ session_start();
 		$password = mysqli_real_escape_string($connect, filter_input(INPUT_POST,'passwordRegisterTXT'));
 		$passwordCheck = mysqli_real_escape_string($connect, filter_input(INPUT_POST,'passwordRetypeRegisterTXT'));
 		if($password == $passwordCheck){
-			
+
 
 			$result = mysqli_query($connect,"SELECT * FROM user WHERE email = '$email'");
 			if (!mysqli_num_rows($result)==0){
-				echo "Username already taken!";
+				echo "  <!-- The Modal -->
+				  <div id='myModal' class='modal'>
+
+				    <!-- Modal content -->
+				    <div class='modal-content'>
+				      <span class='close'>&times;</span>
+				      <p>E-mail al in gebruik!</p>
+				    </div>
+
+				  </div>";
 			}else{
 				$hash = password_hash($password, PASSWORD_DEFAULT);
 				$sql = "INSERT INTO user (voornaam, achternaam, email, telnr, woonplaats, straat, huisnummer, postcode, password) VALUES ('$voornaam', '$achternaam', '$email', '$telnummer', '$woonplaats', '$straat', '$huisnummer', '$postcode', '$hash')";
@@ -29,9 +38,18 @@ session_start();
 			}
 
 
-			
+
 		}else{
-			echo "Passwords don't match!";
+			echo "<!-- The Modal -->
+							  <div id='myModal' class='modal'>
+
+							    <!-- Modal content -->
+							    <div class='modal-content'>
+							      <span class='close'>&times;</span>
+							      <p>Wachtwoorden kloppen niet!</p>
+							    </div>
+
+							  </div>";
 		}
 	}
 
@@ -40,23 +58,41 @@ session_start();
 		$usernameLogin = mysqli_real_escape_string($connect, filter_input(INPUT_POST, 'emailLoginTXT'));
 		$passwordLogin = mysqli_real_escape_string($connect, filter_input(INPUT_POST, 'passwordLoginTXT'));
 		$result = mysqli_query($connect,"SELECT * FROM user WHERE email = '$usernameLogin'");
-		
+
 		if (mysqli_num_rows($result)==1){
 			$row=mysqli_fetch_row($result);
 			if(password_verify($passwordLogin, $row[9])){
-				echo "Welcome ".$row[1]."!";
-				$_SESSION['naam'] = $row[1];
-				$_SESSION['user_id'] = $row[0];
+				foreach ($row as $key => $value) {
+					$_SESSION['userInfo'][$key] = $value;
+				}
 				echo "<script>alert('Logged in! Welcome ".$_SESSION['username']."');</script>";
 				header("location: index.php");
 
 			}else{
-				echo "Wrong password!";
+				echo "<!-- The Modal -->
+									<div id='myModal' class='modal'>
+
+										<!-- Modal content -->
+										<div class='modal-content'>
+											<span class='close'>&times;</span>
+											<p>Wachtwoord niet juist!</p>
+										</div>
+
+									</div>";
 			}
 		}else{
-			echo "Username not found!";
+			echo "<!-- The Modal -->
+								<div id='myModal' class='modal'>
+
+									<!-- Modal content -->
+									<div class='modal-content'>
+										<span class='close'>&times;</span>
+										<p>Gebruikersnaam klopt niet!</p>
+									</div>
+
+								</div>";
 		}
-		
+
 	}
 
 // Logout system
@@ -66,3 +102,25 @@ session_start();
 	}
 
 ?>
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+    modal.style.display = "block";
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
