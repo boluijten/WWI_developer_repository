@@ -1,0 +1,67 @@
+<?php
+session_start();
+ob_start();
+require("connect.php");
+include("loginFunctions.php");
+?>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="style/style_main.css">
+  <link rel="stylesheet" type="text/css" href="style/navbar.css">
+  <link rel="stylesheet" type="text/css" href="style/style_login.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<style>
+</style>
+
+<body>
+<div class="head-form">
+  <div class="login-form">
+    <!-- Login form -->
+    <form method="POST" >
+        <h3>Login</h3>
+        <input type="text" name="emailLoginTXT" placeholder="Email" required><br>
+        <input type="password" name="passwordLoginTXT" placeholder="Password" required><br><br>
+        <button name="submitLoginBTN" style="margin-top:75px;">Log In</button>
+    </form>
+  </div>
+
+
+<div class="vl"></div>
+
+  <div class="register-form">
+    <!-- Register form -->
+    <form method="POST">
+        <h3>Register</h3>
+        <input type="text" name="voornaamRegisterTXT" placeholder="Voornaam" required>
+        <input type="text" name="achternaamRegisterTXT" placeholder="Achternaam" required><br>
+        <input type="email" name="emailRegisterTXT" placeholder="Email" required>
+        <input type="tel" name="telnrRegisterTXT" placeholder="Phone number" required><br>
+        <input type="text" name="woonplaatsRegisterTXT" placeholder="Woonplaats" required>
+        <input type="text" name="straatRegisterTXT" placeholder="Straatnaam" required><br>
+        <input type="text" name="huisnummerRegisterTXT" placeholder="Huisnummer (inc. toevoeging)" required>
+        <input type="text" name="postcodeRegisterTXT" placeholder="Postcode" required><br>
+        <input type="password" name="passwordRegisterTXT" placeholder="Wachtwoord" required>
+        <input type="password" name="passwordRetypeRegisterTXT" placeholder="Controleer wachtwoord" required><br>
+
+        <button name="submitRegisterBTN" style="margin-top:10px;">Registreren</button>
+    </form>
+</div>
+</div>
+
+<div class="footer2">
+  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
+</div>
+
+
+
+</body>
+<?php
+include("header.php");
+?>
+
+</html>
