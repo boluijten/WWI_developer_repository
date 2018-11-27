@@ -52,9 +52,7 @@ include("loginFunctions.php");
 </div>
 </div>
 
-<div class="footer2">
-  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
-</div>
+<br><br>
 
 
 

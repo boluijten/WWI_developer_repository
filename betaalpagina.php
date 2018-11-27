@@ -192,7 +192,7 @@ span.price {
             <div class="container">
               <form>
             <h3>Betalingspagina</h3>
-            <label for="fname">Betaaltypen</label>
+            <label for="fname">Betaaltype</label>
             <div class="icon-container">
               <img src="ideal.png" width="30.86" height="24" valign="middle">
               <select>
@@ -227,26 +227,31 @@ span.price {
 
   </div>
 
-  <p>Leverdatum: (minimaal 1 week van nu.)</p>
-  <input id="datefield" type='date' min='2018-11-20' max='2019-03-11'> tussen 8:00 en 12:00</input>
+  <p>Leverdatum: (minimaal vier dagen van nu.)</p>
+  <input id="datefield" type='date' min='2018-11-20' max='2019-03-11'> </input>
+<br>
+    <p>Kies een moment:</p>
+<input type="radio" id="ochtend" name="tijdstip" >'s ochtends<br><br>
+<input type="radio" id="middag" name="tijdstip" >'s middags<br><br>
+<input type="radio" id="avond" name="tijdstip" >'s avonds
   <br><br><br>
   <button style="margin:auto; width:100%" onclick="window.location.href='confirmatie.php'">Afrekenen<br>
 
-<script>
-var today = new Date();
-var dd = today.getDate()+7;
-var mm = today.getMonth()+1; //January is 0!
-var yyyy = today.getFullYear();
- if(dd<10){
-        dd='0'+dd
-    }
-    if(mm<10){
-        mm='0'+mm
-    }
+    <SCRIPT>
+    var today = new Date();
+    var dd = today.getDate()+3;
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+     if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
 
-today = yyyy+'-'+mm+'-'+dd;
-document.getElementById("datefield").setAttribute("min", today);
-</script>
+    today = yyyy+'-'+mm+'-'+dd;
+    document.getElementById("datefield").setAttribute("min", today);
+    </SCRIPT>
 
 </body>
 </html>

@@ -1,7 +1,6 @@
 <?php
 ob_start();
 session_start();
-include("header.php");
 ?>
 <html>
 <head>
@@ -14,22 +13,19 @@ include("header.php");
 
 <style>
 .sorteerkolom{
-  margin-top: 10%;
-  margin-left: 20vw;
-  height:12vh;
+  width:auto;
+  margin-top: 30px;
   text-align: center;
+  padding-top: 20px;
   border: 2px solid black;
-  width: 75vw;
-  padding: 10px;
-
 }
 </style>
 
 
 <body>
 
-
-
+<div class="page-wrap">
+<div class="grid-container2">
 <div class="sorteerkolom">
 Sorteren op:
 
@@ -48,6 +44,7 @@ Sorteren op:
 
 </form>
 </div>
+</div>
 
 
 <?php
@@ -55,6 +52,7 @@ Sorteren op:
 $zoekterm = filter_input(INPUT_GET, 'search');
 include("functions.php");
 laadCategorieZoekpagina();
+
 
 if (filter_input(INPUT_GET, 'sortSelect') == "Naam_a"){
   SorteerProductenAZ();
@@ -68,13 +66,13 @@ if (filter_input(INPUT_GET, 'sortSelect') == "Naam_a"){
   zoekProduct();
 }
 ?>
-
-
-<div class="footer">
-  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
 </div>
 
 
-</body>
 
+
+</body>
+<?php
+include("header.php");
+?>
 </html>

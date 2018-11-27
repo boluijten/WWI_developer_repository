@@ -8,7 +8,7 @@ if(isset($_SESSION['cart'])){
 
 echo "
 <!-- Top Navigatie Balk -->
-  <div style=\"width:100%; left:0%; \"class=\"navbar\">
+  <div style=\"width:100%; left:0%; \"class=\"navbar2\">
  <a href=\"index.php\"><img style=\"width:auto; height:80px;\" src=\"assets/logo.png\"></a>
 
  <!-- Winkelwagentje + Aantal artikelen -->

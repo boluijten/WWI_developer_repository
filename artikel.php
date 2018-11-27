@@ -24,6 +24,8 @@ hr {
 
 <body onload="currentDiv(1)">
 
+  <div class="page-wrap">
+
 <!-- De Div Waarin Het Product Zit -->
 <!-- De container van de hele pagina-->
 <div class="grid-container-artikelpagina">
@@ -91,6 +93,8 @@ function setPrice(aantal){
 </div>
 </div>
 </div>
+</div>
+
 
 <?php
 

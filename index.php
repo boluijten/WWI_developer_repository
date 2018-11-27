@@ -5,17 +5,25 @@ ob_start();
  include("functions.php");
 
 
+ require("connect2.php");
+
+ $getProducts = $conn->prepare("SELECT * FROM discount JOIN stockitems USING(StockItemID) ORDER BY StockItemID ASC");
+ $getProducts->execute();
+ $products = $getProducts->fetchAll();
 
 ?>
 <html>
 
 <head>
   <title>WWI</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
   <link rel="stylesheet" type="text/css" href="style/style_main.css">
-  <link rel="stylesheet" type="text/css" href="style/navbar.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" type="text/css" href="style/navbar.css">
+
 </head>
 
 <style>
@@ -26,26 +34,95 @@ ob_start();
   padding-top: 20px;
   border: 2px solid black;
 }
+
+.carousel-item{
+  border-radius: 10px;
+  border: 2px solid #4DBBFF;
+  width: 100%;
+  height: auto;
+
+}
+.carousel{
+  margin-top: 9vh;
+  margin-bottom: 10px;
+  width: 100%;
+  height: auto;
+
+}
+.carousel-control-next-icon{
+  color: #4DBBFF;
+  background-image: none;
+  font-weight: bold;
+  font-size: 40px;
+}
+.carousel-control-prev-icon{
+  color: #4DBBFF;
+  background-image: none;
+  font-weight: bold;
+  font-size: 40px;
+}
+.oldPrice{
+  text-decoration: line-through;
+}
+
+.discountProduct{
+
+}
+
+
+
 </style>
 
 <body>
-
+<div class="page-wrap">
 <?php
 laadCategorie();
 ?>
  <!-- Uitgelichte Producten -->
 
 <div class="grid-container2">
-  <?php
-    laadDeals();
-  ?>
-<div class="uitgelichteproducten">
-  <canvas id="canvas"></canvas>
 
-  <p style="margin-top:-17%">De nieuwe website, grote aanbiedingen!</p>
-<button style="z-index:5; position:relative; float:left;" onclick="plusDivs(-1)">&#10094;</button>
-<button style="z-index:5; position:relative; float:right;" onclick="plusDivs(1)">&#10095;</button>
-</div>
+  <center>
+		<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+		  <div class="carousel-inner">
+		  	<?php
+		  		$first = true;
+		  		foreach ($products as $product) {
+		  			$newPrice = number_format($product['UnitPrice']*(1 - $product['discountPercentage']/100),2,',','.');
+		  			$oldPrice = number_format($product['UnitPrice'],2,',','.');
+		  			if($first == true){
+			  			echo "
+			  				<div class=\"carousel-item active\">";
+			    			$first = false;
+		    		}else{
+		    			echo "
+			  				<div class=\"carousel-item\">
+			    			";
+		    		}
+		    		echo "
+		    				<div class='discountProduct'>
+									<h3>".$product['StockItemName']."</h3>
+				     				<sub class='oldPrice'>&euro;".$oldPrice."</sub>
+				     				<h4>&euro;".$newPrice."</h4>
+				     				<p data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Black friday sale!\">".$product['discountPercentage']."% discount</p>
+			    			</div>
+			    		</div>
+			    			";
+
+		  		}
+
+		  	?>
+		  </div>
+		  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		    <span class="carousel-control-prev-icon" aria-hidden="true">&lt;</span>
+		    <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+		    <span class="carousel-control-next-icon" aria-hidden="true">&gt;</span>
+		    <span class="sr-only">Next</span>
+		  </a>
+		</div>
 
 
 </div>
@@ -80,147 +157,33 @@ Sorteren op:
 // Later een terugfunctie door op de geselecteerde categorie te klikken?
 laadProducten();
 ?>
-
-<div class="footer">
-  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
 </div>
 
-<script>
-let W = window.innerWidth;
-let H = window.innerHeight;
-const canvas = document.getElementById("canvas");
-const context = canvas.getContext("2d");
-const maxConfettis = 150;
-const particles = [];
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-const possibleColors = [
-  "SlateBlue",
-  "LightBlue",
-  "Gray"
-];
-
-function randomFromTo(from, to) {
-  return Math.floor(Math.random() * (to - from + 1) + from);
-}
-
-function confettiParticle() {
-  this.x = Math.random() * W; // x
-  this.y = Math.random() * H - H; // y
-  this.r = randomFromTo(11, 33); // radius
-  this.d = Math.random() * maxConfettis + 11;
-  this.color =
-    possibleColors[Math.floor(Math.random() * possibleColors.length)];
-  this.tilt = Math.floor(Math.random() * 33) - 11;
-  this.tiltAngleIncremental = Math.random() * 0.07 + 0.05;
-  this.tiltAngle = 0;
-
-  this.draw = function() {
-    context.beginPath();
-    context.lineWidth = this.r / 2;
-    context.strokeStyle = this.color;
-    context.moveTo(this.x + this.tilt + this.r / 3, this.y);
-    context.lineTo(this.x + this.tilt, this.y + this.tilt + this.r / 5);
-    return context.stroke();
-  };
-}
-
-function Draw() {
-  const results = [];
-
-  // Magical recursive functional love
-  requestAnimationFrame(Draw);
-
-  context.clearRect(0, 0, W, window.innerHeight);
-
-  for (var i = 0; i < maxConfettis; i++) {
-    results.push(particles[i].draw());
-  }
-
-  let particle = {};
-  let remainingFlakes = 0;
-  for (var i = 0; i < maxConfettis; i++) {
-    particle = particles[i];
-
-    particle.tiltAngle += particle.tiltAngleIncremental;
-    particle.y += (Math.cos(particle.d) + 3 + particle.r / 2) / 2;
-    particle.tilt = Math.sin(particle.tiltAngle - i / 3) * 15;
-
-    if (particle.y <= H) remainingFlakes++;
-
-    // If a confetti has fluttered out of view,
-    // bring it back to above the viewport and let if re-fall.
-    if (particle.x > W + 30 || particle.x < -30 || particle.y > H) {
-      particle.x = Math.random() * W;
-      particle.y = -30;
-      particle.tilt = Math.floor(Math.random() * 10) - 20;
-    }
-  }
-
-  return results;
-}
-
-window.addEventListener(
-  "resize",
-  function() {
-    W = window.innerWidth;
-    H = window.innerHeight;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  },
-  false
-);
-
-// Push new confetti objects to `particles[]`
-for (var i = 0; i < maxConfettis; i++) {
-  particles.push(new confettiParticle());
-}
-
-// Initialize
-canvas.width = W;
-canvas.height = H;
-Draw();
-
-</script>
 
 <script>
-var slideIndex = 1;
-showDivs(slideIndex);
+  $('.carousel').carousel({
+      interval: 4000
+  })
+  $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
 
-function plusDivs(n) {
-  showDivs(slideIndex += n);
-}
+      $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#row #item").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+  });
+  </script>
 
-function showDivs(n) {
-  var i;
-  var x = document.getElementsByClassName("aanbieding-product");
-  if (n > x.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = x.length}
-  for (i = 0; i < x.length; i++) {
-     x[i].style.display = "none";
-  }
-  x[slideIndex-1].style.display = "block";
-}
-</script>
 
 
 
 </body>
-
-<?php
-
-
-if (filter_input('sortSelect') == "AZ_homepage"){
-  AZ_homepage();
-} elseif (filter_input('sortSelect') == "Naam_z"){
-  SorteerProductenZA();
-} elseif (filter_input('sortSelect') == "Prijs_hoog"){
-  SorteerProductenDESC();
-} elseif (filter_input('sortSelect') == "Prijs_laag"){
-  SorteerProductenASC();
-}else{
-  laadProducten();
-}
-?>
 
 
 <?php

@@ -8,7 +8,7 @@ if(isset($_SESSION['cart'])){
 
 echo "
 <!-- Top Navigatie Balk -->
-  <div class=\"navbar\">
+  <div class=\"navbar2\">
  <a href=\"index.php\"><img style=\"width:auto; height:80px;\" src=\"assets/logo.png\"></a>
 
  <!-- Winkelwagentje + Aantal artikelen -->
@@ -42,6 +42,12 @@ echo "
 </div>
 
 
+
+";
+
+echo "<div class='site-footer'>
+  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
+</div>
 
 ";
 
