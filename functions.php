@@ -43,6 +43,8 @@
 	function laadProducten(){
 		// Verbinden met database
 		include("connect.php");
+		
+		$items = array();
 		// Kijk of er een categorie is geselecteerd
 		if(filter_input(INPUT_GET, 'categorie') != ""){
 			// Verkrijg ID van de categorie uit de GET en maak een query die alle producren verkrijgt met dat speciale categorie ID
@@ -58,26 +60,82 @@
 		$resultGroups = mysqli_query($connect, $groupQuery);
 		// Check of er data beschikbaar is:
 		if (mysqli_num_rows($resultGroups) > 0) {
-		    echo "<div class=\"grid-container\">";
+		    
 		    // Voor elk gevangen resultaat een productweergave printen
-		    while(($row = mysqli_fetch_assoc($resultGroups))) {
-		    	echo "<a href='artikel.php?artikel=".$row['StockItemID']."&group=".$row['StockGroupID']."'>";
+		    while($row = mysqli_fetch_assoc($resultGroups)) {
+		    	$items[] = $row['StockItemID'];
+		    }
+		    
+		} else {
+		    echo "<div class='geenProducten'>Nog geen producten in deze categorie!</div>";
+		}
+		$pagina = 1;
+		if(isset($_GET['paginaNr'])){
+			$pagina = filter_input(INPUT_GET, 'paginaNr');
+		}
+
+		if(isset($_GET['aantalProducten'])){
+			$paginas = ceil(count($items) / filter_input(INPUT_GET, 'aantalProducten'));
+			for($i = $pagina; $i <= $; $i++){
+			
+			echo "<a href='index.php?paginaNr=$i'>$i</a> - ";
+			}
+			echo "<div class=\"grid-container-seach2\">";
+
+			$i = 0;
+			
+			for ($i = 0; $i < filter_input(INPUT_GET, 'aantalProducten'); $i++) {
+				laadProduct($item);
+				
+			}
+		}else{
+			$paginas = ceil(count($items) / 10);
+			echo "<div class='paginaNummers'>";
+			for($i = 1; $i <= $paginas; $i++){
+			
+			echo "<a href='index.php?paginaNr=$i' class='paginaNummer'>$i</a> - ";
+			}
+			echo "</div>";
+			echo "<div class=\"grid-container-seach2\">";
+
+			$i = 0;
+			
+			for ($i = 0; $i < 10; $i++) {
+				laadProduct($items[$i]);
+
+			}
+		}
+		
+		echo "</div>";
+		
+		
+	}
+
+	function laadProduct($itemID){
+		include("connect.php");
+		$query = "SELECT StockItemName, StockItemID, MarketingComments, StockGroupName, StockGroupID, Photo, UnitPrice FROM stockitems JOIN stockitemstockgroups USING(StockItemID) JOIN stockgroups USING(StockGroupID) WHERE StockItemID = ".$itemID." GROUP BY StockItemID";
+		$queryResult = mysqli_query($connect, $query);
+		if (mysqli_num_rows($queryResult) > 0) {
+
+		    // Voor elk gevangen resultaat een productweergave printen
+		    while($row = mysqli_fetch_assoc($queryResult)){
+			    echo "<a href='artikel.php?artikel=".$row['StockItemID']."&group=".$row['StockGroupID']."'>";
 		    	echo "<div class=\"grid-item\">";
 		    	echo "<h3>".$row['StockItemName']."</h3>";
-		    	if(file_exists("assets/producten/".$row['StockItemID']."/1.jpg")){
-		    		echo "<img src='assets/producten/".$row['StockItemID']."/1.jpg' class='productImageHome'>";
-		    	}else{
-		    		echo "<img src='assets/geen.jpg' class='productImageHome'>";
-		    	}
+			    if(file_exists("assets/producten/".$row['StockItemID']."/1.jpg")){
+			    	echo "<img src='assets/producten/".$row['StockItemID']."/1.jpg' class='productImageHome'>";
+			    }else{
+			    	echo "<img src='assets/geen.jpg' class='productImageHome'>";
+			    }
 		    	echo "<p>".$row['MarketingComments']."</p>";
 		    	echo "<div class='priceInDiv'>&euro;".$row['UnitPrice']."</div>";
 		    	echo "</div>";
 		    	echo "</a>";
-		    }
-		    echo "</div>";
-		} else {
+			}
+		}else {
 		    echo "<div class='geenProducten'>Nog geen producten in deze categorie!</div>";
 		}
+						
 	}
 
 	// laad de aanbiedingen op de homepage
@@ -168,7 +226,7 @@
 			$resultSearch = mysqli_query($connect, $searchQuery);
 			// Check of er data beschikbaar is:
 			if (mysqli_num_rows($resultSearch) > 0) {
-				echo "<div class='search'><h2>Resultaten voor \"".htmlentities($searchHTML)."\"</h2></div>";
+				echo "<div class='search'><h3>Zoekresultaten voor \"<i>".htmlspecialchars($searchID)."</i>\"</h3></div>";
 
 			    echo "<div class=\"grid-container-seach\">";
 			    // Voor elk gevangen resultaat een productweergave printen
@@ -189,9 +247,9 @@
 			    echo "</div>";
 			} else {
 				if($onCategory){
-					echo "<div class='geenProducten'>Nog geen producten met de zoekterm \"$searchID\" in this category!</div>";
+					echo "<div class='search'><h3>Nog geen producten met de zoekterm \"<i>$searchID</i>\" in deze categorie!</h3></div>";
 				}else{
-					echo "<div class='geenProducten'>Nog geen producten met de zoekterm \"$searchID\"!</div>";
+					echo "<div class='search'><h3>Nog geen producten met de zoekterm \"<i>$searchID</i>\"!</h3></div>";
 				}
 
 			}
@@ -236,25 +294,26 @@
 			$resultSearch = mysqli_query($connect, $searchQuery);
 			// Check of er data beschikbaar is:
 			if (mysqli_num_rows($resultSearch) > 0) {
-					echo "<div class=\"grid-container-seach\">";
-					// Voor elk gevangen resultaat een productweergave printen
-					while($row = mysqli_fetch_assoc($resultSearch)) {
-						echo "<a href='artikel.php?artikel=".$row['StockItemID']."&group=".$row['StockGroupID']."'>";
-			    	echo "<div class=\"grid-item\">";
-			    	echo "<h3>".$row['StockItemName']."</h3>";
-				    if(file_exists("assets/producten/".$row['StockItemID']."/1.jpg")){
-			    		echo "<img src='assets/producten/".$row['StockItemID']."/1.jpg' class='productImageHome'>";
-			    	}else{
-			    		echo "<img src='assets/geen.jpg' class='productImageHome'>";
-			    	}
-			    	echo "<p>".$row['MarketingComments']."</p>";
-						echo "<p>".$row['UnitPrice']."</p>";
-						echo "</div>";
-						echo "</a>";
-					}
+				echo "<div class='search'><h3>Zoekresultaten voor \"<i>".htmlspecialchars($searchID)."</i>\"</h3></div>";
+				echo "<div class=\"grid-container-seach\">";
+				// Voor elk gevangen resultaat een productweergave printen
+				while($row = mysqli_fetch_assoc($resultSearch)) {
+					echo "<a href='artikel.php?artikel=".$row['StockItemID']."&group=".$row['StockGroupID']."'>";
+		    	echo "<div class=\"grid-item\">";
+		    	echo "<h3>".$row['StockItemName']."</h3>";
+			    if(file_exists("assets/producten/".$row['StockItemID']."/1.jpg")){
+		    		echo "<img src='assets/producten/".$row['StockItemID']."/1.jpg' class='productImageHome'>";
+		    	}else{
+		    		echo "<img src='assets/geen.jpg' class='productImageHome'>";
+		    	}
+		    	echo "<p>".$row['MarketingComments']."</p>";
+					echo "<p>".$row['UnitPrice']."</p>";
 					echo "</div>";
+					echo "</a>";
+				}
+				echo "</div>";
 			} else {
-					echo "<div class='geenProducten'>Nog geen producten met de zoekterm $searchID!</div>";
+				echo "<div class='search'><h3>Nog geen producten met de zoekterm \"<i>$searchID</i>\"!</h3></div>";
 			}
 		}
 

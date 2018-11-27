@@ -300,6 +300,11 @@ position: sticky;
 	text-align: center;
 }
 
+.paginaNummers{
+  text-align: center;
+  width: 100vw;
+}
+
 canvas {
   margin: 0;
 	z-index: 1;
