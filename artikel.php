@@ -1,6 +1,7 @@
 <?php
 ob_start();
 include("functions.php");
+session_start();
 
 ?>
 <html>

@@ -1,0 +1,115 @@
+
+a {
+
+}
+
+body {
+  font-family: Arial;
+  font-size: 17px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#yesCheck:checked ~ #ifNo {display: none;}
+#noCheck:checked ~ #ifNo {display: block;}
+
+.row {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  margin: 0 -16px;
+}
+
+.col-25 {
+  -ms-flex: 25%; /* IE10 */
+  flex: 25%;
+}
+
+.col-50 {
+  -ms-flex: 50%; /* IE10 */
+  flex: 50%;
+  margin: auto;
+}
+
+.col-75 {
+  -ms-flex: 75%; /* IE10 */
+  flex: 75%;
+  margin-top: 20vh;
+}
+
+.col-25,
+.col-50,
+.col-75 {
+  padding: 0 16px;
+}
+
+.container {
+  background-color: #f2f2f2;
+  padding: 5px 20px 15px 20px;
+  border: 3px solid rgba(0, 174, 239, 0.8);
+  border-radius: 3px;
+  width: 70vw;
+  margin: auto;
+}
+
+.container-naw {
+  background-color: #f2f2f2;
+  padding: 5px 20px 15px 20px;
+  border: 3px solid rgba(0, 174, 239, 0.8);
+  grid-template-columns: auto auto;
+  border-radius: 3px;
+  width: 70vw;
+  display: grid;
+  margin: auto;
+  grid-gap: 10px;
+}
+
+
+label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.icon-container {
+  margin-bottom: 20px;
+  padding: 7px 0;
+  font-size: 24px;
+}
+
+.btn {
+  background-color: #4DBBFF;
+  color: white;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  width: 100%;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+
+
+hr {
+  border: 1px solid lightgrey;
+}
+
+span.price {
+  float: right;
+  color: grey;
+}
+
+  .row {
+    flex-direction: column-reverse;
+  }
+  .col-25 {
+    margin-bottom: 20px;
+  }
+}

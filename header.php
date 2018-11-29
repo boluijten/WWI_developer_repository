@@ -10,7 +10,7 @@ echo "
 <!-- Top Navigatie Balk -->
   <div class=\"navbar2\">
  <a href=\"index.php\"><img style=\"width:auto; height:80px;\" src=\"assets/logo.png\"></a>
-
+	<a style=\" text-decoration:none;\" href=\"informatie.php\"><div class = 'navbar-text2'>Vragen?</a></div>
  <!-- Winkelwagentje + Aantal artikelen -->
  <a href=\"winkelwagen.php\">
   <div class = navbar-text>
@@ -31,7 +31,7 @@ echo "
 </div>
 
     <!-- De zoekbalk-->
-  <div class = navbar-text>
+  <div class = navbar-search>
   <div class=\"search-container\">
   <form action=\"action_search.php\" method=\"GET\">
     <input type=\"text\" style=\"height:60px;\" placeholder=\"Search..\" name=\"search\">

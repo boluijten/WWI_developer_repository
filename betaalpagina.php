@@ -2,146 +2,20 @@
 <?php
 ob_start();
 session_start();
-include("header2.php");
+
 ?>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="style/navbar.css">
+
+<link rel="stylesheet" type="text/css" href="style/betaalpagina.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="style/navbar.css">
 </head>
 
 <style>
-
-a {
-
-}
-
-body {
-  font-family: Arial;
-  font-size: 17px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-#yesCheck:checked ~ #ifNo {display: none;}
-#noCheck:checked ~ #ifNo {display: block;}
-
-.row {
-  display: -ms-flexbox; /* IE10 */
-  display: flex;
-  -ms-flex-wrap: wrap; /* IE10 */
-  flex-wrap: wrap;
-  margin: 0 -16px;
-}
-
-.col-25 {
-  -ms-flex: 25%; /* IE10 */
-  flex: 25%;
-}
-
-.col-50 {
-  -ms-flex: 50%; /* IE10 */
-  flex: 50%;
-  margin: auto;
-}
-
-.col-75 {
-  -ms-flex: 75%; /* IE10 */
-  flex: 75%;
-  margin-top: 20vh;
-}
-
-.col-25,
-.col-50,
-.col-75 {
-  padding: 0 16px;
-}
-
-.container {
-  background-color: #f2f2f2;
-  padding: 5px 20px 15px 20px;
-  border: 3px solid rgba(0, 174, 239, 0.8);
-  border-radius: 3px;
-  width: 70vw;
-  margin: auto;
-}
-
-.container-naw {
-  background-color: #f2f2f2;
-  padding: 5px 20px 15px 20px;
-  border: 3px solid rgba(0, 174, 239, 0.8);
-  grid-template-columns: auto auto;
-  border-radius: 3px;
-  width: 70vw;
-  display: grid;
-  margin: auto;
-  grid-gap: 10px;
-}
-
-.input[type=text] {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-label {
-  margin-bottom: 10px;
-  display: block;
-}
-
-.icon-container {
-  margin-bottom: 20px;
-  padding: 7px 0;
-  font-size: 24px;
-}
-
-.btn {
-  background-color: #4DBBFF;
-  color: white;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  width: 100%;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 17px;
-}
-
-.btn:hover {
-  background-color: #45a049;
-}
-
-a {
-  color: #2196F3;
-}
-
-hr {
-  border: 1px solid lightgrey;
-}
-
-span.price {
-  float: right;
-  color: grey;
-}
-
-  .row {
-    flex-direction: column-reverse;
-  }
-  .col-25 {
-    margin-bottom: 20px;
-  }
-}
-
-
-
-
 </style>
-</head>
 <body>
 
   <div class="col-75">
@@ -183,7 +57,7 @@ span.price {
         <div class="row">
           <div class="col-50">
         <h3>Of Inloggen</h3>
-          <button onclick="window.location.href='login_register.php'">Inloggen
+          <button onclick="window.location.href='login_register.php'">Inloggen</button>
           </div>
         </div>
       </div>
@@ -226,27 +100,31 @@ span.price {
 
 
   </div>
-
+<form action="confirmatie.php" method="GET">
   <p>Leverdatum: (minimaal vier dagen van nu.)</p>
-  <input id="datefield" type='date' min='2018-11-20' max='2019-03-11'> </input>
+  <input id="datefield" value='' name='date' type='date' min='' max='2019-03-11' required>
 <br>
     <p>Kies een moment:</p>
-<input type="radio" id="ochtend" name="tijdstip" >'s ochtends<br><br>
-<input type="radio" id="middag" name="tijdstip" >'s middags<br><br>
-<input type="radio" id="avond" name="tijdstip" >'s avonds
-  <br><br><br>
-  <button style="margin:auto; width:100%" onclick="window.location.href='confirmatie.php'">Afrekenen<br>
+<input type="radio" id="ochtend" checked="checked" name="tijdstip" value='tussen 8:00 & 12:00' required>'s ochtends (tussen 8:00 & 12:00)<br><br>
+<input type="radio" id="middag" name="tijdstip" value='tussen 12:01 & 18:00' required>'s middags (tussen 12:01 & 18:00)<br><br>
+<input type="radio" id="avond" name="tijdstip" value='tussen 18:01 & 20:00' required>'s avonds (tussen 18:01 & 20:00)
 
+  <br><br><br>
+  <button name='bestelling' type="submit" style="margin:auto; width:100%" value=1> Afrekenen<br></button>
+</form>
+</div>
     <SCRIPT>
     var today = new Date();
-    var dd = today.getDate()+3;
     var mm = today.getMonth()+1; //January is 0!
     var yyyy = today.getFullYear();
+
+    var dd = today.getDay()+4;
+
      if(dd<10){
-            dd='0'+dd
+            dd='0'+dd;
         }
         if(mm<10){
-            mm='0'+mm
+            mm='0'+mm;
         }
 
     today = yyyy+'-'+mm+'-'+dd;
@@ -254,4 +132,7 @@ span.price {
     </SCRIPT>
 
 </body>
+<?php
+include("header.php");
+?>
 </html>

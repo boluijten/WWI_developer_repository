@@ -136,39 +136,14 @@ span.price {
 
     <div class="col-25">
       <div class="container">
-        <?php
-        echo '<p> Beste '.$_SESSION['userInfo'][1].' '.$_SESSION['userInfo'][2].', bedankt voor uw bestelling bij Wide World Importers. Uw bestelling wordt op '.$_GET['date'].' '.$_GET['tijdstip'].' geleverd op het adres: '.$_SESSION['userInfo'][6].' '.$_SESSION['userInfo'][7].', '.$_SESSION['userInfo'][8].' '.$_SESSION['userInfo'][5].'.</p>';
-        ?>
+        <h1>FAQ</h1>
+        <h6>Voordat u ons een vraag stuurt op het vragenformulier, kijk of u uw vraag hieronder kunt vinden.</h6>
+        <p>Staat uw vraag hier niet tussen? Klik dan <a href="test.php">hier.</a></p>
         <hr>
-        <p>Bestelde artikelen:<p>
-          <div id="order">
-          <?php
-          if(isset($_SESSION['cart']) && count($_SESSION['cart']) > 0){
-            $cart = $_SESSION['cart'];
-            foreach ($cart as $itemID => $aantal) {
-                include("connect.php");
-                $sql = "SELECT * FROM stockitems WHERE StockItemID = $itemID";
-                $resultGetInfo = mysqli_query($connect, $sql);
-                if(mysqli_num_rows($resultGetInfo) > 0){
-                  while($row = mysqli_fetch_assoc($resultGetInfo)){
-                      echo $row['StockItemName']." <br> aantal: $aantal <br><hr><br>";
 
-                    }
-                  }
-                }
-              }
-          ?>
-        </div>
-          <button style="margin:auto; width:100%" onclick="window.location.href='index.php'">Verder Winkelen</button><br>
+          </div>
       </div>
     </div>
-  </div>
-  <?php
-  if(isset($_GET['bestelling'])){
-    include("email.php");
-    orderBevestiging($_SESSION['userInfo'][3]);
-  }
 
-   ?>
 </body>
 </html>

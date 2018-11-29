@@ -7,9 +7,13 @@ ob_start();
 
  require("connect2.php");
 
- $getProducts = $conn->prepare("SELECT * FROM discount JOIN stockitems USING(StockItemID) ORDER BY StockItemID ASC");
+ $getProducts = $conn->prepare("SELECT UnitPrice, discountPercentage, S.StockItemName, S.StockItemID, A.StockGroupID FROM discount LEFT JOIN stockitems AS S USING(StockItemID) LEFT JOIN stockitemstockgroups AS A USING(StockItemID) ORDER BY StockItemID ASC");
  $getProducts->execute();
  $products = $getProducts->fetchAll();
+
+ $getLink = $conn->prepare("SELECT * FROM stockitems ORDER BY StockItemID ASC");
+ $getLink->execute();
+ $link = $getLink->fetchAll();
 
 ?>
 <html>
@@ -93,21 +97,26 @@ laadCategorie();
 		  			$oldPrice = number_format($product['UnitPrice'],2,',','.');
 		  			if($first == true){
 			  			echo "
-			  				<div class=\"carousel-item active\">";
+			  			<div class=\"carousel-item active\">";
 			    			$first = false;
 		    		}else{
 		    			echo "
+
 			  				<div class=\"carousel-item\">
 			    			";
+
 		    		}
 		    		echo "
+            <a href='artikel.php?artikel=".$product['StockItemID']."&group=".$product['StockGroupID']."'>
 		    				<div class='discountProduct'>
 									<h3>".$product['StockItemName']."</h3>
 				     				<sub class='oldPrice'>&euro;".$oldPrice."</sub>
 				     				<h4>&euro;".$newPrice."</h4>
-				     				<p data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Black friday sale!\">".$product['discountPercentage']."% discount</p>
+				     				<p data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Opening sale!\">".$product['discountPercentage']."% discount</p>
 			    			</div>
+                </a>
 			    		</div>
+
 			    			";
 
 		  		}

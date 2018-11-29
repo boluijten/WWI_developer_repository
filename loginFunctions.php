@@ -32,6 +32,8 @@ session_start();
 				$sql = "INSERT INTO user (voornaam, achternaam, email, telnr, woonplaats, straat, huisnummer, postcode, password) VALUES ('$voornaam', '$achternaam', '$email', '$telnummer', '$woonplaats', '$straat', '$huisnummer', '$postcode', '$hash')";
 				if ($connect->query($sql) === TRUE) {
 				    echo "<script>alert('New user created successfully');</script>";
+						include("email.php");
+						registerEmail($email);
 				} else {
 				    echo "Error: " . $sql . "<br>" . $connect->error;
 				}
