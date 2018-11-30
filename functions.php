@@ -10,6 +10,10 @@
 			$groupID = filter_input(INPUT_GET, 'categorie');
 
 		}
+		$aantalProducten = 10;
+		if(isset($_GET['aantalProducten'])){
+			$aantalProducten = filter_input(INPUT_GET, 'aantalProducten');
+		}
 		//Verkrijg alle productgroepen
 		$groupQuery = "SELECT StockGroupName, StockGroupID FROM stockgroups";
 		$resultGroups = mysqli_query($connect, $groupQuery);
@@ -27,10 +31,13 @@
 		    		$class = "notInUse";
 		    	}
 		    	// Print de rij met de class die eerder is geset
-		    	echo "<a href=\"index.php?categorie=".$row['StockGroupID']."&naamCategorie=".$row['StockGroupName']."\" class='$class'>".$row['StockGroupName']."</a>";
+		    	
+		    	
+		    	
+		    	echo "<a href=\"index.php?categorie=".$row['StockGroupID']."&naamCategorie=".$row['StockGroupName'] ."&aantalProducten=$aantalProducten&paginaNr=0\" class='$class'>".$row['StockGroupName']."</a>";
 		    }
 		    if($groupID != ""){
-		    	echo "<a href=\"index.php\" class='clear'>See all</a>";
+		    	echo "<a href=\"index.php?aantalProducten=$aantalProducten&paginaNr=0\" class='clear'>See all</a>";
 		    }
 		    echo "</div>";
 		} else {
@@ -69,46 +76,97 @@
 		} else {
 		    echo "<div class='geenProducten'>Nog geen producten in deze categorie!</div>";
 		}
-		$pagina = 1;
+
+		$pagina = 0;
 		if(isset($_GET['paginaNr'])){
 			$pagina = filter_input(INPUT_GET, 'paginaNr');
 		}
 
-		if(isset($_GET['aantalProducten'])){
-			$paginas = ceil(count($items) / filter_input(INPUT_GET, 'aantalProducten'));
-			for($i = $pagina; $i <= $; $i++){
-			
-			echo "<a href='index.php?paginaNr=$i'>$i</a> - ";
-			}
-			echo "<div class=\"grid-container-seach2\">";
+		
 
-			$i = 0;
-			
-			for ($i = 0; $i < filter_input(INPUT_GET, 'aantalProducten'); $i++) {
-				laadProduct($item);
+		// Laden pagina nummers
+		ladenPaginaNummers($items);
+		
+		
+		// Laden producten
+		echo "<div class=\"grid-container-seach2\">";
+
+		$aantalProducten = 10;
+		if(filter_input(INPUT_GET, 'aantalProducten') != ""){
+			$aantalProducten = filter_input(INPUT_GET, 'aantalProducten');
+		}
+
+		if(isset($_GET['paginaNr'])){
+			if($pagina != 0){
+				$max = $pagina*$aantalProducten+$aantalProducten;
+			}else{
+				$max = $aantalProducten;
+			}
+			for ($i = $pagina*$aantalProducten+1; $i < $max+1; $i++) {
+				if($items[$i-1] != NULL){
+					laadProduct($items[$i-1]);
+				}else{
+					break;
+				}
+				
 				
 			}
 		}else{
-			$paginas = ceil(count($items) / 10);
-			echo "<div class='paginaNummers'>";
-			for($i = 1; $i <= $paginas; $i++){
-			
-			echo "<a href='index.php?paginaNr=$i' class='paginaNummer'>$i</a> - ";
-			}
-			echo "</div>";
-			echo "<div class=\"grid-container-seach2\">";
-
-			$i = 0;
-			
-			for ($i = 0; $i < 10; $i++) {
-				laadProduct($items[$i]);
-
+			for ($i = 0; $i < $aantalProducten; $i++) {
+				if($items[$i] != NULL){
+					laadProduct($items[$i]);
+				}else{
+					break;
+				}
+				
+				
 			}
 		}
+	
 		
 		echo "</div>";
 		
 		
+	}
+
+	function ladenPaginaNummers($items){
+		if(isset($_GET['aantalProducten'])){
+			$paginas = ceil(count($items) / filter_input(INPUT_GET, 'aantalProducten'));
+
+		}else{
+			$paginas = ceil(count($items) / 10);
+		}
+		echo "<div class='paginaNummers'>";
+		for($i = 0; $i < $paginas; $i++){
+			$classCurrent="notCurrentPage";
+			if($i == filter_input(INPUT_GET, 'paginaNr')){
+				$classCurrent="currentPage";
+			}
+			$pageCipher = $i + 1;
+			$streepje = "";
+			if($i != 0){
+				$streepje = " - ";
+			}
+
+			$varURL = "";
+			if(isset($_GET['categorie'])){
+				$varURL .= "categorie=".filter_input(INPUT_GET, 'categorie')."&";
+			}
+			if(isset($_GET['sortSelect'])){
+				$varURL .= "sortSelect=".filter_input(INPUT_GET, 'sortSelect')."&";
+			}
+			
+			if(isset($_GET['aantalProducten'])){
+				$varURL .= "aantalProducten=".filter_input(INPUT_GET, 'aantalProducten')."&";
+			}else{
+				$varURL .= "aantalProducten=10&";
+			}
+			$varURL .= "paginaNr=".$i;
+
+			echo $streepje."<a href='index.php?$varURL' class='$classCurrent'>$pageCipher</a>";
+			
+		}
+		echo "</div>";
 	}
 
 	function laadProduct($itemID){
@@ -321,9 +379,10 @@
 			// Verbinden met database
 			include("connect.php");
 			// Verkrijg de zoekterm
-			$categorieID = filter_input(INPUT_GET, 'categorie');
+			$items = array();
 			// Zoek in de database naar producten die de zoekterm in de naam hebben
 			if(isset($_GET['categorie'])){
+				$categorieID = filter_input(INPUT_GET, 'categorie');
 				if ($method == "Naam_a"){
 				  $searchQuery = "SELECT StockItemName, StockItemID, MarketingComments, UnitPrice, StockGroupID, Photo FROM stockitems JOIN stockitemstockgroups USING(StockItemID) WHERE StockGroupID = $categorieID GROUP BY StockItemID ORDER BY StockItemName ASC ";
 				} elseif ($method == "Naam_z"){
@@ -346,31 +405,55 @@
 			}
 			
 
-
 			// Haal naam id en comments uit de database
 			$resultSearch = mysqli_query($connect, $searchQuery);
 			// Check of er data beschikbaar is:
 			if (mysqli_num_rows($resultSearch) > 0) {
-					echo "<div class=\"grid-container-seach2\">";
-					// Voor elk gevangen resultaat een productweergave printen
-					while($row = mysqli_fetch_assoc($resultSearch)) {
-						echo "<a href='artikel.php?artikel=".$row['StockItemID']."&group=".$row['StockGroupID']."'>";
-			    	echo "<div class=\"grid-item\">";
-			    	echo "<h3>".$row['StockItemName']."</h3>";
-				    if(file_exists("assets/producten/".$row['StockItemID']."/1.jpg")){
-			    		echo "<img src='assets/producten/".$row['StockItemID']."/1.jpg' class='productImageHome'>";
-			    	}else{
-			    		echo "<img src='assets/geen.jpg' class='productImageHome'>";
-			    	}
-			    	echo "<p>".$row['MarketingComments']."</p>";
-						echo "<p>".$row['UnitPrice']."</p>";
-						echo "</div>";
-						echo "</a>";
-					}
-					echo "</div>";
+				// Voor elk gevangen resultaat een productweergave printen
+			    while($row = mysqli_fetch_assoc($resultSearch)) {
+			    	$items[] = $row['StockItemID'];
+			    }
 			} else {
 					echo "<div class='geenProducten'>Nog geen producten met de zoekterm $searchID!</div>";
 			}
+			$pagina = 0;
+			if(isset($_GET['paginaNr'])){
+				$pagina = filter_input(INPUT_GET, 'paginaNr');
+			}
+
+			// Laden pagina nummers
+			ladenPaginaNummers($items);
+			echo "<div class=\"grid-container-seach2\">";
+
+			
+			if(isset($_GET['paginaNr'])){
+				if($pagina != 0){
+					$max = $pagina*filter_input(INPUT_GET, 'aantalProducten')+filter_input(INPUT_GET, 'aantalProducten');
+				}else{
+					$max = filter_input(INPUT_GET, 'aantalProducten');
+				}
+				for ($i = $pagina*filter_input(INPUT_GET, 'aantalProducten')+1; $i < $max+1; $i++) {
+					if($items[$i-1] != NULL){
+						laadProduct($items[$i-1]);
+					}else{
+						break;
+					}
+					
+					
+				}
+			}else{
+				for ($i = 0; $i < filter_input(INPUT_GET, 'aantalProducten'); $i++) {
+					if($items[$i-1] != NULL){
+						laadProduct($items[$i-1]);
+					}else{
+						break;
+					}
+					
+				}
+			}
+	
+			
+			echo "</div>";
 
 		}
 
@@ -387,7 +470,7 @@
 		// JOIN stockitemholdings USING('StockItemID')
 		// , QuantityOnHand
 		if($artikelID != ""){
-			$artikelQuery = "SELECT StockItemName, StockItemID, MarketingComments, UnitPrice, QuantityOnHand, IsChillerStock, CustomFields, ColorName FROM stockitems JOIN stockitemholdings USING(StockItemID) LEFT JOIN colors USING(ColorID) WHERE StockItemID = $artikelID";
+			$artikelQuery = "SELECT StockItemName, StockItemID, MarketingComments, UnitPrice, QuantityOnHand, IsChillerStock, CustomFields, ColorName, discountPercentage FROM stockitems JOIN stockitemholdings USING(StockItemID) LEFT JOIN colors USING(ColorID) LEFT JOIN discount USING(StockItemID) WHERE StockItemID = $artikelID";
 
 			// Haal naam id en comments uit de database
 			$resultArtikel = mysqli_query($connect, $artikelQuery);
@@ -395,6 +478,16 @@
 			if (mysqli_num_rows($resultArtikel) > 0) {
 				// Voor elk gevangen resultaat een productweergave printen
 			    $row = mysqli_fetch_assoc($resultArtikel);
+
+			    $stukprijs = $row['UnitPrice'];
+			    $oldPrice = "";
+			    $korting = "";
+			    if($row['discountPercentage'] != NULL){
+			    	$oldPrice = "&euro;".$row['UnitPrice'];
+			    	$stukprijs = number_format($row['UnitPrice'] * (1 - $row['discountPercentage'] / 100),2);
+			    	$korting = $row['discountPercentage']."% korting!";
+			    }
+
 			    echo "<h2>".$row['StockItemName']."</h2>";
 			    echo "<hr>";
 			    echo "<div class=\"grid-container-artikel-ondertitel\">
@@ -402,48 +495,50 @@
 						<div class=\"w3-content\" style=\"max-width:20vw; margin-left:0vw;\">";
 
 
-					//laad de hoofdafbeeldigen
-					laadHoofdafbeeldigen($row['StockItemID']);
+				//laad de hoofdafbeeldigen
+				laadHoofdafbeeldigen($row['StockItemID']);
 
 
-					echo "<div class=\"grid-item-artikel-ondertitel\"><div class=\"prijspaneel\">";
-			  		if($row['IsChillerStock'] == 1){
-			  			echo "<p>Gekoeld product!</p>";
-			  		}
-					echo "<form method='post' action='addToCart.php'>
-		  					<h2>&euro;<span id='prijs'>".$row['UnitPrice']."</span></h2>
-		  					<input  type=\"number\" name=\"aantal\" min=\"1\" max=\"".number_format($row['QuantityOnHand'], 0, '', '')."\" value='1' onchange='setPrice(this.value)'>
-		  					<span style='display: none;' id='prijsBegin'>".$row['UnitPrice']."</span>
-		  					<input type='text' style='display: none;' name='artikelID' value='".$row['StockItemID']."'>
-		  					<input type=\"image\" src=\"assets/artikelpag/winkelmandjegijs.png\" style=\"width:auto; height:40px; position:relative; \" align=\"middle\" border=\"0\" alt=\"Submit\" />
-		  					<p>Only ".number_format($row['QuantityOnHand'], 0, ',', '.')." left in stock!</p>
-		  				</form> </div></div></div>" ;
+				echo "<div class=\"grid-item-artikel-ondertitel\"><div class=\"prijspaneel\">";
+		  		if($row['IsChillerStock'] == 1){
+		  			echo "<p>Gekoeld product!</p>";
+		  		}
+				echo "<form method='post' action='addToCart.php'>
+						<p>$korting</p>
+						<sub style='text-decoration: line-through'>$oldPrice</sub>
+	  					<h2>&euro;<span id='prijs'>".$stukprijs."</span></h2>
+	  					<input  type=\"number\" name=\"aantal\" min=\"1\" max=\"".number_format($row['QuantityOnHand'], 0, '', '')."\" value='1' onchange='setPrice(this.value)'>
+	  					<span style='display: none;' id='prijsBegin'>".$stukprijs."</span>
+	  					<input type='text' style='display: none;' name='artikelID' value='".$row['StockItemID']."'>
+	  					<input type=\"image\" src=\"assets/artikelpag/winkelmandjegijs.png\" style=\"width:auto; height:40px; position:relative; \" align=\"middle\" border=\"0\" alt=\"Submit\" />
+	  					<p>Only ".number_format($row['QuantityOnHand'], 0, ',', '.')." left in stock!</p>
+	  				</form> </div></div></div>" ;
 
-			  		// Laad de thumbnails
-			  		laadThumbnails($row['StockItemID']);
-			  		echo "<hr><p>";
-			  		$fields = json_decode($row['CustomFields'], true);
-			  		if($row['ColorName'] != NULL){
-			  			echo "- <strong>Color:</strong> ".$row['ColorName']."<br>";
-			  		}
-			  		if($fields['CountryOfManufacture'] != ""){
-			  			echo "- <strong>Country of manufacture:</strong> ".$fields['CountryOfManufacture'];
-			  		}
-			  		if($fields['Tags'] != NULL){
-			  			$aantal = count($fields['Tags']);
-			  			$current = 1;
-			  			echo "<br>- <strong>Tags:</strong> ";
-			  			foreach ($fields['Tags'] as $tag) {
-			  				echo "$tag";
-			  				if($current < $aantal){
-			  					echo ", ";
-			  				}
-			  				$current++;
-			  			}
-			  		}
+		  		// Laad de thumbnails
+		  		laadThumbnails($row['StockItemID']);
+		  		echo "<hr><p>";
+		  		$fields = json_decode($row['CustomFields'], true);
+		  		if($row['ColorName'] != NULL){
+		  			echo "- <strong>Color:</strong> ".$row['ColorName']."<br>";
+		  		}
+		  		if($fields['CountryOfManufacture'] != ""){
+		  			echo "- <strong>Country of manufacture:</strong> ".$fields['CountryOfManufacture'];
+		  		}
+		  		if($fields['Tags'] != NULL){
+		  			$aantal = count($fields['Tags']);
+		  			$current = 1;
+		  			echo "<br>- <strong>Tags:</strong> ";
+		  			foreach ($fields['Tags'] as $tag) {
+		  				echo "$tag";
+		  				if($current < $aantal){
+		  					echo ", ";
+		  				}
+		  				$current++;
+		  			}
+		  		}
 			  		
 
-			  		echo "</p>";
+			  	echo "</p>";
 	  		}
 					
 		

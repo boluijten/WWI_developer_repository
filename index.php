@@ -59,7 +59,8 @@ Sorteren op:
     <input type="radio" name="sortSelect" value="Prijs_hoog" class="sorteerDing" <?php if(filter_input(INPUT_GET, 'sortSelect') == 'Prijs_hoog'){echo "checked='checked'";} ?>>Prijs Hoog - Laag
     <input type="radio" name="sortSelect" value="Prijs_laag" class="sorteerDing" <?php if(filter_input(INPUT_GET, 'sortSelect') == 'Prijs_laag'){echo "checked='checked'";} ?>>Prijs Laag - Hoog
      <?php if(isset($_GET['categorie'])){ echo "<input type=\"hidden\" name=\"categorie\" value=\"". filter_input(INPUT_GET, 'categorie') . "\">";} ?>
-     <?php if(isset($_GET['pageNr'])){echo "<input type=\"hidden\" name=\"categorie\" value=\"". filter_input(INPUT_GET, 'pageNr') . "\">";}else{echo "<input type=\"hidden\" name=\"pageNr\" value=\"1\">";} ?>
+     <?php if(isset($_GET['pageNr'])){echo "<input type=\"hidden\" name=\"pageNr\" value=\"". filter_input(INPUT_GET, 'pageNr') . "\">";}else{echo "<input type=\"hidden\" name=\"paginaNr\" value=\"0\">";} ?>
+     <?php //if(!isset($_GET['aantalProducten'])){echo "<input type=\"hidden\" name=\"aantalProducten\" value=\"". filter_input(INPUT_GET, 'aantalProducten') . "\">";} ?>
     <select name='aantalProducten'>
         <option value="10" <?php if(filter_input(INPUT_GET, 'aantalProducten') == 10){echo "selected";} ?>>10</option>
         <option value="20" <?php if(filter_input(INPUT_GET, 'aantalProducten') == 20){echo "selected";} ?>>20</option>

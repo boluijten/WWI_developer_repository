@@ -289,9 +289,8 @@ position: sticky;
   position: center;
 }
 .geenProducten{
-  position: absolute;
-  top: 20vh;
-  left: 40vw;
+width: 100vw;
+text-align: center;
 }
 .search{
   position: absolute;
@@ -303,6 +302,16 @@ position: sticky;
 .paginaNummers{
   text-align: center;
   width: 100vw;
+   margin-top: 5px;
+}
+
+.notCurrentPage{
+  text-decoration: none;
+}
+.currentPage{
+  color: #4DBBFF;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 canvas {
