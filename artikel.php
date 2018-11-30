@@ -1,7 +1,7 @@
 <?php
 ob_start();
-session_start();
 include("functions.php");
+session_start();
 
 ?>
 <html>
@@ -24,6 +24,8 @@ hr {
 </style>
 
 <body onload="currentDiv(1)">
+
+  <div class="page-wrap">
 
 <!-- De Div Waarin Het Product Zit -->
 <!-- De container van de hele pagina-->
@@ -92,6 +94,8 @@ function setPrice(aantal){
 </div>
 </div>
 </div>
+</div>
+
 
 <?php
 

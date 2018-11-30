@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Register system
 	if(isset($_POST['submitRegisterBTN'])){
 		$voornaam = mysqli_real_escape_string($connect, filter_input(INPUT_POST,'voornaamRegisterTXT'));
@@ -31,8 +32,8 @@
 				$sql = "INSERT INTO user (voornaam, achternaam, email, telnr, woonplaats, straat, huisnummer, postcode, password) VALUES ('$voornaam', '$achternaam', '$email', '$telnummer', '$woonplaats', '$straat', '$huisnummer', '$postcode', '$hash')";
 				if ($connect->query($sql) === TRUE) {
 				    echo "<script>alert('New user created successfully');</script>";
-                    include("email.php");
-				    registerEmail($email, $voornaam);
+						include("email.php");
+						registerEmail($email);
 				} else {
 				    echo "Error: " . $sql . "<br>" . $connect->error;
 				}
@@ -66,7 +67,13 @@
 				foreach ($row as $key => $value) {
 					$_SESSION['userInfo'][$key] = $value;
 				}
-				header("location: index.php");
+				echo "<script>alert('Logged in! Welcome ".$_SESSION['username']."');</script>";
+				if(isset($_GET['red'])){
+					header("location: betaalpagina.php");
+				}else{
+					header("location: index.php");
+				}
+				
 
 			}else{
 				echo "<!-- The Modal -->
@@ -95,7 +102,11 @@
 
 	}
 
-
+// Logout system
+	if(isset($_POST['logout'])){
+		session_destroy();
+		header("location: login.php");
+	}
 
 ?>
 <script>

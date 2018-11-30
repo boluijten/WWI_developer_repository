@@ -1,5 +1,9 @@
-body {margin:0;
-font-family: "Comic Sans MS", sans-serif}
+body {
+  margin:0;
+  font-family: "Comic Sans MS", sans-serif;
+  padding-bottom: 70px;
+  position: relative;
+}
 
 
 

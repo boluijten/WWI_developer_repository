@@ -1,5 +1,4 @@
 <?php
-session_start();
 ob_start();
 include("connect.php");
 include("loginFunctions.php");
@@ -19,6 +18,7 @@ include("loginFunctions.php");
 </style>
 
 <body>
+
 <div class="form-grid">
   <div class="userspecifics">
     <?php
@@ -31,10 +31,7 @@ include("loginFunctions.php");
   </div>
 </div>
 
-<div class="footer2">
-  <p>© Groepje 1 2018/2019 | All Rights Reserved | Contact Us: +31658743610 | WWI@gmail.com</p>
-</div>
-
+<br><br><br>
 </body>
 <?php
 include("header.php");

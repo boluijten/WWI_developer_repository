@@ -1,149 +1,20 @@
 <?php
-session_start();
 ob_start();
-require("connect.php");
+session_start();
+include('connect.php');
 ?>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="style/navbar.css">
+
+<link rel="stylesheet" type="text/css" href="style/betaalpagina.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="style/navbar.css">
 </head>
 
 <style>
-
-a {
-
-}
-
-body {
-  font-family: Arial;
-  font-size: 17px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-#yesCheck:checked ~ #ifNo {display: none;}
-#noCheck:checked ~ #ifNo {display: block;}
-
-.row {
-  display: -ms-flexbox; /* IE10 */
-  display: flex;
-  -ms-flex-wrap: wrap; /* IE10 */
-  flex-wrap: wrap;
-  margin: 0 -16px;
-}
-
-.col-25 {
-  -ms-flex: 25%; /* IE10 */
-  flex: 25%;
-}
-
-.col-50 {
-  -ms-flex: 50%; /* IE10 */
-  flex: 50%;
-  margin: auto;
-}
-
-.col-75 {
-  -ms-flex: 75%; /* IE10 */
-  flex: 75%;
-  margin-top: 20vh;
-}
-
-.col-25,
-.col-50,
-.col-75 {
-  padding: 0 16px;
-}
-
-.container {
-  background-color: #f2f2f2;
-  padding: 5px 20px 15px 20px;
-  border: 3px solid rgba(0, 174, 239, 0.8);
-  border-radius: 3px;
-  width: 70vw;
-  margin: auto;
-}
-
-.container-naw {
-  background-color: #f2f2f2;
-  padding: 5px 20px 15px 20px;
-  border: 3px solid rgba(0, 174, 239, 0.8);
-  grid-template-columns: auto auto;
-  border-radius: 3px;
-  width: 70vw;
-  display: grid;
-  margin: auto;
-  grid-gap: 10px;
-}
-
-.input[type=text] {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-label {
-  margin-bottom: 10px;
-  display: block;
-}
-
-.icon-container {
-  margin-bottom: 20px;
-  padding: 7px 0;
-  font-size: 24px;
-}
-
-.btn {
-  background-color: #4DBBFF;
-  color: white;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  width: 100%;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 17px;
-}
-
-.btn:hover {
-  background-color: #45a049;
-}
-
-a {
-  color: #2196F3;
-}
-
-hr {
-  border: 1px solid lightgrey;
-}
-
-span.price {
-  float: right;
-  color: grey;
-}
-
-  .row {
-    flex-direction: column-reverse;
-  }
-  .col-25 {
-    margin-bottom: 20px;
-  }
-
-span.pricePP{
-  text-align: center;
-}
-
-
-
-
 </style>
-</head>
 <body>
 
   <div class="col-75">
@@ -152,16 +23,16 @@ span.pricePP{
       <div class="container">
         <h4>Mandje <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b><?php echo count($_SESSION['cart']); ?></b></span></h4>
         <?php
-        $totaalprijs = 0;
-        foreach ($_SESSION['cart'] as $product => $amount) {
-          $sql = "SELECT * FROM stockitems JOIN stockitemstockgroups USING(StockItemID) WHERE StockItemID = $product";
-          $resultiItem = mysqli_query($connect, $sql);
-          $row = mysqli_fetch_assoc($resultiItem);
-          echo "<p>".$amount."x <a href=\"artikel.php?artikel=".$row['StockItemID']."&group=".$row['StockGroupID']."\">".$row['StockItemName']."</a> (&euro;".$row['UnitPrice']."/<sub>piece</sub>) <span class=\"price\">&euro;". number_format($row['UnitPrice'] * $amount, 2, ',', '.') ."</span></p>";
-          $totaalprijs += $row['UnitPrice'] * $amount;
-        }
-      
-      ?>
+          $totaalprijs = 0;
+          foreach ($_SESSION['cart'] as $product => $amount) {
+            $sql = "SELECT * FROM stockitems JOIN stockitemstockgroups USING(StockItemID) WHERE StockItemID = $product";
+            $resultiItem = mysqli_query($connect, $sql);
+            $row = mysqli_fetch_assoc($resultiItem);
+            echo "<p>".$amount."x <a href=\"artikel.php?artikel=".$row['StockItemID']."&group=".$row['StockGroupID']."\">".$row['StockItemName']."</a> (&euro;".$row['UnitPrice']."/<sub>piece</sub>) <span class=\"price\">&euro;". number_format($row['UnitPrice'] * $amount, 2, ',', '.') ."</span></p>";
+            $totaalprijs += $row['UnitPrice'] * $amount;
+          }
+        
+        ?>
         <hr>
         <p>Totaal <span class="price" style="color:black"><b>&euro;<?php echo number_format($totaalprijs, 2, ',', '.'); ?></b></span></p>
       </div>
@@ -197,7 +68,7 @@ span.pricePP{
         <div class="row">
           <div class="col-50">
             <h3>Of Inloggen</h3>
-            <button onclick="window.location.href=\'login_register.php\'">Inloggen
+            <button onclick="window.location.href=\'login_register.php?red\'">Inloggen
           </div>
         </div>
         ';
@@ -212,28 +83,41 @@ span.pricePP{
       }
       
       ?>
-      
-    </div>
+          </div>
+        </div>
+        
+      </div>
   </div>
             <br><br>
             <div class="container">
               <form>
             <h3>Betalingspagina</h3>
-            <label for="fname">Betaaltypen</label>
+            <label for="fname">Betaaltype</label>
             <div class="icon-container">
               <img src="ideal.png" width="30.86" height="24" valign="middle">
               <select>
-                  <option value="volvo">ING</option>
-                  <option value="saab">Rabobank</option>
-                  <option value="opel">SNS</option>
-                  <option value="audi">Regiobank</option>
+                  <option value="ING">ING</option>
+                  <option value="Rabobank">Rabobank</option>
+                  <option value="SNS">SNS</option>
+                  <option value="Regiobank">Regiobank</option>
+                  <option value="ABN AMRO">ABN AMRO</option>
+                  <option value="ASN Bank">ASN Bank</option>
+                  <option value="Bunq">Bunq</option>
+                  <option value="Knab">Knab</option>
+                  <option value="Moneyou">Moneyou</option>
+                  <option value="Triodos Bank">Triodos Bank</option>
+                  <option value="Van Lanschot">Van Lanschot</option>
             </select>
             </div>
             </form>
+            <hr>
+            <br>
 <input type="radio" checked="checked"name="adres" id="yesCheck" required>Leveradres hetzelfde als factuuradres<br><br>
 
 
+<!-- Leveradres aanpassen. -->
 <input type="radio" name="adres" id="noCheck">leveradres:<br><br>
+<hr>
 <div id="ifNo">
 <label for="adr"><i class="fa fa-address-card-o"></i> Addres</label>
 <input type="text" id="adr" name="address" placeholder="Dieperenweg 2"><br><br>
@@ -245,13 +129,43 @@ span.pricePP{
 
     <label for="postcode">Postcode</label>
     <input type="text" id="postcode" name="postcode" placeholder="8062PK"><br><br>
+    <hr>
 
 
   </div>
-  <button style="margin:auto; width:100%" onclick="window.location.href='confirmatie.php'">Afrekenen</button><br>
+<form action="confirmatie.php" method="GET">
+  <p>Leverdatum: (minimaal vier dagen van nu.)</p>
+  <input id="datefield" value='' name='date' type='date' min='' max='2019-03-11' required>
+<br>
+    <p>Kies een moment:</p>
+<input type="radio" id="ochtend" checked="checked" name="tijdstip" value='tussen 8:00 & 12:00' required>'s ochtends (tussen 8:00 & 12:00)<br><br>
+<input type="radio" id="middag" name="tijdstip" value='tussen 12:01 & 18:00' required>'s middags (tussen 12:01 & 18:00)<br><br>
+<input type="radio" id="avond" name="tijdstip" value='tussen 18:01 & 20:00' required>'s avonds (tussen 18:01 & 20:00)
 
+  <br><br><br>
+  <button name='bestelling' type="submit" style="margin:auto; width:100%" value=1> Afrekenen<br></button>
+</form>
+</div>
+    <SCRIPT>
+    var today = new Date();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
 
+    var dd = today.getDay()+4;
 
-<?php include("header2.php"); ?>
+     if(dd<10){
+            dd='0'+dd;
+        }
+        if(mm<10){
+            mm='0'+mm;
+        }
+
+    today = yyyy+'-'+mm+'-'+dd;
+    document.getElementById("datefield").setAttribute("min", today);
+    </SCRIPT>
+
 </body>
+<?php
+include("header.php");
+?>
 </html>
